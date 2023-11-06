@@ -1,4 +1,139 @@
-.header{
-    color: $blue;
-    font-family: $primary;
+.header {
+	padding: rem-calc(25 0);
+	background-color: $green;
+	top: 0;
+	z-index: 10;
+	width: 100%;
+
+	&__content {
+		display: flex;
+		gap: rem-calc(50);
+		justify-content:flex-end;
+		align-items: center;
+
+		&-links {
+			@include breakpoint(1100 down) {
+				height: 100vh;
+				position: absolute;
+				width: 100%;
+				background-color: #fff;
+				display:none;
+				left: 0;
+				z-index: 1;
+			}
+		}
+	}
+
+	&__links {
+		display: flex;
+		gap: rem-calc(30);
+        padding-inline-start: 0px;;
+
+		@include breakpoint(1150 down) {
+			gap: rem-calc(15);
+		}
+		@include breakpoint(1100 down) {
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			gap: rem-calc(30);
+		}
+
+		&-item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: rem-calc(10);
+            a {
+                font-family: $primary;
+                color: $white;
+                font-weight: 500;
+                font-size: rem-calc(18);
+                line-height: rem-calc(18);
+                text-decoration: none;
+                position: relative;
+                &:after {
+                    content: '';
+                    width: 0px; /* Start with 1px width */
+                    height: rem-calc(2);
+                    background-color: $white;
+                    position: absolute;
+                    bottom: -10px;
+                    left: 50%; /* Start from the middle */
+                    transform: translateX(-50%);
+                    transition: width 0.1s; /* Add a transition for smooth animation */
+                  }
+                &:hover::after {
+                    width: 100%; /* Expand to 100% width on hover */
+                  }
+              }
+              
+
+			@include breakpoint(1100 down){
+				animation: showLink 0.2s ease-in-out 1 forwards;
+				opacity:0;
+
+				@keyframes showLink {
+					100%{
+						opacity:1;
+					}
+				}
+			}
+
+		}
+		
+	}
+}
+
+.hamburger {
+	@include breakpoint(1101 up) {
+		display: none;
+	}
+	width: rem-calc(35);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: rem-calc(5);
+	z-index: 5;
+
+	&:hover {
+		cursor: pointer;
+	}
+	span {
+		height: 4px;
+		border-radius: 10px;
+		width: 100%;
+		background-color: $white;
+		transition: transform 0.25s;
+	}
+}
+
+input[type='checkbox'] {
+	&:checked {
+		+ label {
+			position: relative;
+
+			span {
+				position: absolute;
+
+				&:nth-of-type(1) {
+					transform: rotate(45deg);
+					transition: transform 0.25s;
+				}
+				&:nth-of-type(2) {
+					display: none;
+				}
+				&:nth-of-type(3) {
+					transform: rotate(-45deg);
+					transition: transform 0.25s;
+				}
+			}
+			+ div {
+				top: 0;
+				display: flex;
+                background-color: $green;
+			}
+		}
+	}
 }

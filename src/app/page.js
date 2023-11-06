@@ -62,10 +62,10 @@ const Homepage = () => {
         <div className="homepage__banner-overlay"></div>
         <div className="container">
           <div className="homepage__banner-content">
-            <div className="homepage__banner-content-green">
+            <div className="homepage__banner-content-title">
               {pageData.acf.banner_title}
             </div>
-            <div className="homepage__banner-content-main">
+            <div className="homepage__banner-content-text">
               {pageData.acf.banner_text}
             </div>
           </div>

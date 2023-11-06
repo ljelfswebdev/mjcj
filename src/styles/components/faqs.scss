@@ -6,13 +6,12 @@
     &-content{
 
         &-title{
-            font-family: $primary;
             font-weight: bold;
             font-size: rem-calc(40);
             line-height: rem-calc(43);
-            text-align: left;
+            text-align: center;
             color: #fff;
-            margin-bottom: rem-calc(15);
+            margin-bottom: rem-calc(20);
             
         }
 

@@ -21,23 +21,36 @@ const ServiceSwiper = () => {
     return ( 
         <section className="service-swiper">
         <div className="container">
-          <div className="service-swiper-content">
-            <div className="service-swiper-content-title">
+          <div className="service-swiper__content">
+            <div className="service-swiper__title">
               <span></span>{globalsData.acf.service_swiper_title}<span></span>
             </div>
-            <div className="service-swiper-content-subtitle">
-            {globalsData.acf.service_swiper_subtitle}
-            </div>
-            <Swiper slidesPerView={3} spaceBetween={30} pagination={{ clickable: true }} modules={[Pagination]} className="mySwiper">
+            <Swiper 
+            slidesPerView={1} 
+            spaceBetween={30} 
+            pagination={{ clickable: true }} 
+            modules={[Pagination]} 
+            className="mySwiper"
+            breakpoints={{
+              550: {
+                slidesPerView: 2,
+              },
+              800: {
+                slidesPerView: 3,
+              }
+            }}>
             {services.map((service) => (
                 <SwiperSlide key={service.id}>
-                <Link href={`/services/${service.id}`}>
-                <p>{service.title.rendered}</p>
-                <p>text: {service.acf.service_info}</p>
+                <Link href={`/services/${service.id}`} className="service-swiper__card">
+                  <div className="service-swiper__card-overlay"></div>
+                  <div className="service-swiper__card-content">
+                    <p className="service-swiper__card-text service-swiper__card-text--title">{service.title.rendered}</p>
+                    <p className="service-swiper__card-text">{service.acf.slide_text}</p>
+                  </div>
 
                 {/* Display the image URL */}
                 {service.imageURL && (
-                    <img src={service.imageURL} alt={service.title.rendered} />
+                    <img src={service.imageURL} alt={service.title.rendered}  className="service-swiper__card-image"/>
                 )}
                 </Link>
                 </SwiperSlide>

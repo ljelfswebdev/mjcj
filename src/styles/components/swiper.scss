@@ -1,0 +1,18 @@
+.swiper{
+
+}
+
+.swiper-pagination{
+    position: relative !important;
+    margin-top: rem-calc(20);
+
+    &-bullet{
+        border:3px solid $green;
+        height: rem-calc(7);
+        width:rem-calc(7);
+        min-height: rem-calc(7);
+        min-width:rem-calc(7);
+        border-radius: 50%;
+        background: $white;
+    }
+}

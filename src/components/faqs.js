@@ -43,10 +43,6 @@ const Faqs = () => {
           <div className="faqs-content-title">
             <span></span>{globalsData.acf.faqs_title}<span></span>
           </div>
-          <div
-            className="faqs-content-subtitle"
-            dangerouslySetInnerHTML={{ __html: globalsData.acf.faqs_subtitle }}
-          ></div>
           <div className="faqs-content-accordion">
             {faqs.map((faq, index) => (
               <div
@@ -66,7 +62,7 @@ const Faqs = () => {
                 <div
                   className={`faqs-content-accordion-item-answer ${index === activeIndex ? 'faqs-content-accordion-item-answer--active' : ''}`}
                 >
-                  {faq.acf.faq_answer}
+                  {faq.acf.answer}
                 </div>
               </div>
             ))}

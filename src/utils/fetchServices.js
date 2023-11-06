@@ -14,7 +14,7 @@ export const fetchServices = async () => {
     const servicesWithImageUrls = await Promise.all(
       response.data.map(async (service) => ({
         ...service,
-        imageURL: await fetchImageURL(service.acf.service_image),
+        imageURL: await fetchImageURL(service.acf.slide_image),
       }))
     );
 

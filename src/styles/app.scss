@@ -1,0 +1,17 @@
+@import './variables.scss';
+
+//imports 
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+
+@import '../styles/theme/util/util';
+@import './theme/globals.scss';
+
+//components
+@import './components/header.scss';
+@import './components/footer.scss';
+@import './components/service-swiper.scss';
+@import './components/faqs.scss';
+
+//pages
+// @import './pages/homepage.scss';

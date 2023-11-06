@@ -1,0 +1,32 @@
+.service-swiper{
+    padding-top: clamp(rem-calc(40), 8vw, rem-calc(80));
+    padding-bottom: clamp(rem-calc(40), 8vw, rem-calc(80));
+
+    &-content{
+
+        &-title{
+            display:flex;
+            gap:rem-calc(10);
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: rem-calc(20);
+            text-align: left;
+            color: $green;
+
+            span{
+                height: rem-calc(2);
+                width:rem-calc(30);
+                background-color: $green;
+            }
+        }
+        &-subtitle{
+            font-weight: bold;
+            font-size: rem-calc(40);
+            line-height: rem-calc(46);
+            color: $black;
+            text-align: center;
+            margin-bottom: rem-calc(40);
+        }
+    }
+}

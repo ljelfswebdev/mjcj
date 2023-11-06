@@ -1,0 +1,102 @@
+.faqs{
+    background-color: $green;
+    padding-top: clamp(rem-calc(40), 8vw, rem-calc(100));
+    padding-bottom: clamp(rem-calc(40), 8vw, rem-calc(100));
+
+    &-content{
+
+        &-title{
+            font-family: $primary;
+            font-weight: bold;
+            font-size: rem-calc(40);
+            line-height: rem-calc(43);
+            text-align: left;
+            color: #fff;
+            margin-bottom: rem-calc(15);
+            
+        }
+
+        &-subtitle{
+            font-family: $primary;
+            font-weight: normal;
+            font-size: rem-calc(16);
+            line-height: rem-calc(20);
+            text-align: left;
+            color: #fff;
+            margin-bottom: rem-calc(40);
+
+            a{
+                color: #fff;
+                text-decoration: underline;
+            }
+
+        }
+
+        &-accordion{
+
+            &-item{
+                padding: rem-calc(35);
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: rem-calc(4);
+                margin-bottom: rem-calc(20);
+
+                &:hover{
+                    cursor: pointer;
+                }
+
+                &-button{
+                    display:flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: rem-calc(20);
+                    position: relative;
+                    color:#fff;
+                    font-family: $primary;
+                    font-weight: 600;
+                    font-size: rem-calc(20);
+                    line-height: rem-calc(24);
+                    text-align: left;
+                    &-cross{
+                        span{
+                            height: rem-calc(2);
+                            width: rem-calc(15);
+                            background-color: #fff;
+                            display: flex;
+                            &:first-of-type{
+                                transform: rotate(90deg);
+                                position: absolute;
+                                transition: transform 0.25s ease-in-out;
+                            }
+                        }
+                    }
+
+                    &--active{
+                        .faqs-content-accordion-item-button-cross{
+                            span{
+                                &:first-of-type{
+                                    transform: rotate(0deg);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &-answer{
+                    display:none;
+                    margin-top: rem-calc(10);
+                    font-family: $primary;
+                    font-weight: normal;
+                    font-size: rem-calc(16);
+                    line-height: rem-calc(20);
+                    text-align: left;
+                    color: #fff;
+
+                    &--active{
+                        display: flex;
+                        animation: opacityReveal 0.5s ease-in-out;
+                    }
+                }
+            }
+        }
+    }
+}

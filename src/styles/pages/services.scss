@@ -1,0 +1,11 @@
+.services{
+
+    &__content{
+        display: block;
+    }
+    &__grid{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: rem-calc(30);
+    }
+}

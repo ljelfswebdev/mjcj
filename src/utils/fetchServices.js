@@ -8,7 +8,7 @@ export const fetchServices = async () => {
   try {
     const response = await axios.get(`${apiBaseUrl}/service`, {
       params: {
-        _fields: 'id,title,acf', 
+        _fields: 'id,title,acf, skill', 
       },
     });
     const servicesWithImageUrls = await Promise.all(

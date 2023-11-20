@@ -1,0 +1,60 @@
+.service{
+    &__card{
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        min-height: rem-calc(500);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        text-decoration: none;
+
+
+        &:hover{
+           .service__card-image{
+            transform: scale(1.1);
+           }
+        }
+
+        &-overlay{
+            position: absolute;
+            top:0;
+            left:0;
+            height: rem-calc(500);
+            width: 100%;
+            background: rgba(0,0,0,0.37);
+            z-index: 1;
+        }
+
+        &-content{
+            position: relative;
+            z-index:1;
+            padding-bottom: rem-calc(40);
+        }
+
+        &-text{
+            padding: rem-calc(0 40);
+            color: $white;
+            font-weight: normal;
+            font-size: rem-calc(16);
+            text-decoration: none;
+            margin: 0;
+
+            &--title{
+                font-size: rem-calc(24);
+                font-weight:bold;
+            }
+        }
+        &-image{
+            transition: transform 0.5s ease-in-out;
+            position: absolute;
+            top:0;
+            left:0;
+            height: rem-calc(500);
+            width: 100%;
+            object-fit: cover;
+
+        }
+    }
+}

@@ -4,6 +4,7 @@ import { Pagination } from 'swiper/modules';
 import Link from 'next/link';
 import { fetchServices } from '../utils/fetchServices';
 import { useGlobalsContext } from '../utils/fetchGlobals';
+import ServiceCard from './service-card';
 
 const ServiceSwiper = () => {
     const globalsData = useGlobalsContext();
@@ -41,18 +42,7 @@ const ServiceSwiper = () => {
             }}>
             {services.map((service) => (
                 <SwiperSlide key={service.id}>
-                <Link href={`/services/${service.id}`} className="service-swiper__card">
-                  <div className="service-swiper__card-overlay"></div>
-                  <div className="service-swiper__card-content">
-                    <p className="service-swiper__card-text service-swiper__card-text--title">{service.title.rendered}</p>
-                    <p className="service-swiper__card-text">{service.acf.slide_text}</p>
-                  </div>
-
-                {/* Display the image URL */}
-                {service.imageURL && (
-                    <img src={service.imageURL} alt={service.title.rendered}  className="service-swiper__card-image"/>
-                )}
-                </Link>
+                  <ServiceCard service={service} key={service.id}/>
                 </SwiperSlide>
             ))}
             

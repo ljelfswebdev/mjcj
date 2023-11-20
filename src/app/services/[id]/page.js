@@ -4,8 +4,10 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation'
 import { fetchServiceDetail } from '../../../utils/fetchServices'; // Create a function to fetch the detail of a specific service
-
+import { useGlobalsContext } from '../../../utils/fetchGlobals';
 const ServiceDetail = () => {
+  const globalsData = useGlobalsContext();
+
     const pathname = usePathname();
     const parts = pathname.split('/');
     const id = parts[parts.length - 1];
@@ -27,7 +29,7 @@ const ServiceDetail = () => {
         }
       }, [id]);
 
-      if (isLoading) {
+      if (isLoading || !globalsData) {
         return (
           <div className="loading">
             <img src="/loading.gif" alt="Loading..." />

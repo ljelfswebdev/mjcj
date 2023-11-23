@@ -17,6 +17,7 @@ const ServicesPage = () => {
 
   const [selectedSkill, setSelectedSkill] = useState('');
   const [filteredServices, setFilteredServices] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   console.log(services);
 
@@ -80,9 +81,31 @@ const ServicesPage = () => {
       setFilteredServices(filtered);
     }
   }, [selectedSkill, services]);
+
+  useEffect(() => {
+    if (selectedSkill === '') {
+      setFilteredServices(services.filter(service =>
+        service.title.rendered.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
+    } else {
+      const filtered = services.filter((service) => {
+        if (Array.isArray(service.skill)) {
+          return service.skill.includes(parseInt(selectedSkill));
+        }
+        return false;
+      }).filter(service =>
+        service.title.rendered.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredServices(filtered);
+    }
+  }, [selectedSkill, services, searchQuery]);
   
   const handleSkillChange = e => {
     setSelectedSkill(e.target.value);
+  };
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
 
@@ -112,6 +135,12 @@ const ServicesPage = () => {
                 </option>
               ))}
           </select>
+          <input
+            type="search"
+            placeholder="Search by title"
+            value={searchQuery}
+            onChange={handleInputChange}
+          />
             </form>
           </div>
           <div className="services__grid">

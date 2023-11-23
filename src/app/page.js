@@ -14,12 +14,14 @@ const Homepage = () => {
   const globalsData = useGlobalsContext();
   const [pageData, setPageData] = useState(null);
   const [bannerImageURL, setBannerImageURL] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const slug = 'homepage'; // Change this to the desired page slug
     fetchPageData(slug)
       .then((data) => {
         setPageData(data);
+        setIsLoading(false);
 
         // Fetch the banner image URL
         const bannerImageID = data.acf.banner_image;
@@ -27,6 +29,7 @@ const Homepage = () => {
           fetchImageURL(bannerImageID)
             .then((url) => setBannerImageURL(url))
             .catch((error) => {
+              setIsLoading(false);
               console.log('Error fetching this image')
             });
         }
@@ -45,7 +48,7 @@ const Homepage = () => {
       });
   }, []);
 
-  if (!pageData) {
+  if (isLoading || !globalsData) {
     return( 
     <div className="loading">
       <img src="/loading.gif"/>

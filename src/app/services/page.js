@@ -19,7 +19,6 @@ const ServicesPage = () => {
   const [filteredServices, setFilteredServices] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  console.log(services);
 
 
   useEffect(() => {

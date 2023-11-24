@@ -15,25 +15,56 @@ const Contact = () => {
       yourEmail: "",
       yourMessage: "",
     });
-
     const handleSubmit = async (e) => {
       e.preventDefault();
       const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
   
       try {
+        const form = new FormData();
+  
+        // Append each form field to the FormData object
+        Object.keys(formData).forEach((key) => {
+          form.append(key, formData[key]);
+        });
+  
+        // Make a POST request using Axios
         const response = await axios.post(
           `${apiBaseUrl}wp-json/contact-form-7/v1/contact-forms/56/feedback`,
-          formData
+          form,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
         );
-    
   
-        console.log("Form submitted successfully!", response.data);
-        // Handle success or navigate to a success page
+        console.log('Response:', response.data);
+        // Handle success, you might want to redirect the user or show a success message
       } catch (error) {
-        console.error("Error submitting form:", error);
-        // Handle error or show error message
+        console.error('Error:', error);
+        // Handle error, display an error message to the user, etc.
       }
     };
+    // const handleSubmit = async (e) => {
+    //   e.preventDefault();
+    //   const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  
+    //   console.log(formData);
+
+    //   try {
+    //     const response = await axios.post(
+    //       `${apiBaseUrl}wp-json/contact-form-7/v1/contact-forms/56/feedback`,
+    //       formData
+    //     );
+    
+  
+    //     console.log("Form submitted successfully!", response.data);
+    //     // Handle success or navigate to a success page
+    //   } catch (error) {
+    //     console.error("Error submitting form:", error);
+    //     // Handle error or show error message
+    //   }
+    // };
   
     const handleChange = (e) => {
       const { name, value } = e.target;

@@ -66,20 +66,20 @@ const ServicesPage = () => {
       });
   }, []);
 
-  useEffect(() => {
-    if (selectedSkill === '') {
+  // useEffect(() => {
+  //   if (selectedSkill === '') {
   
-      setFilteredServices(services);
-    } else {
-      const filtered = services.filter((service) => {
-        if (Array.isArray(service.skill)) {
-          return service.skill.includes(parseInt(selectedSkill));
-        }
-        return false;
-      });
-      setFilteredServices(filtered);
-    }
-  }, [selectedSkill, services]);
+  //     setFilteredServices(services);
+  //   } else {
+  //     const filtered = services.filter((service) => {
+  //       if (Array.isArray(service.skill)) {
+  //         return service.skill.includes(parseInt(selectedSkill));
+  //       }
+  //       return false;
+  //     });
+  //     setFilteredServices(filtered);
+  //   }
+  // }, [selectedSkill, services]);
 
   useEffect(() => {
     if (selectedSkill === '') {

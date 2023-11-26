@@ -8,13 +8,14 @@ export const fetchServices = async () => {
   try {
     const response = await axios.get(`${apiBaseUrl}/service`, {
       params: {
-        _fields: 'id,title,acf, skill', 
+        _fields: 'id,title,acf,skill', // Adjust fields as needed
       },
     });
+
     const servicesWithImageUrls = await Promise.all(
       response.data.map(async (service) => ({
         ...service,
-        imageURL: await fetchImageURL(service.acf.slide_image),
+        imageURL: await fetchImageURL(service.acf.slide_image), // Assuming fetchImageURL is a function fetching image URLs
       }))
     );
 
@@ -24,6 +25,8 @@ export const fetchServices = async () => {
     throw error;
   }
 };
+
+
 
 
 export const fetchServiceDetail = async (id) => {

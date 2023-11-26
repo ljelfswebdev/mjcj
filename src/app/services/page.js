@@ -1,7 +1,7 @@
 // Your Next.js page file
 "use client"
+
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import axios from 'axios';
 import { fetchPageData } from '../../utils/fetchPageData';
 import { fetchServices } from '../../utils/fetchServices';
@@ -11,6 +11,7 @@ import ServiceCard from '../../components/service-card';
 const ServicesPage = () => {
   const [pageData, setPageData] = useState(null);
   const globalsData = useGlobalsContext();
+  const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
   const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [skillTerms, setSkillTerms] = useState([]);
@@ -19,11 +20,12 @@ const ServicesPage = () => {
   const [filteredServices, setFilteredServices] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const servicesPerPage = 3;
 
+  const [totalServices, setTotalServices] = useState(0);
 
   useEffect(() => {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
-  
     const fetchSkillTerms = async () => {
       try {
         const response = await axios.get(`${apiBaseUrl}/skill`);
@@ -35,10 +37,9 @@ const ServicesPage = () => {
         setIsLoading(false);
       }
     };
-  
+
     fetchSkillTerms();
   }, []);
-
 
   useEffect(() => {
     const slug = 'services';
@@ -55,58 +56,73 @@ const ServicesPage = () => {
 
   useEffect(() => {
     fetchServices()
-    
-      .then((servicesWithImages) => {
-        setServices(servicesWithImages);
+      .then((allServices) => {
+        setTotalServices(allServices.length);
+        const slicedServices = allServices.slice(0, servicesPerPage);
+        setServices(slicedServices);
+        setFilteredServices(allServices);
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log('Error fetching services');
+        console.log('Error fetching services:', error);
         setIsLoading(false);
       });
   }, []);
 
-  // useEffect(() => {
-  //   if (selectedSkill === '') {
-  
-  //     setFilteredServices(services);
-  //   } else {
-  //     const filtered = services.filter((service) => {
-  //       if (Array.isArray(service.skill)) {
-  //         return service.skill.includes(parseInt(selectedSkill));
-  //       }
-  //       return false;
-  //     });
-  //     setFilteredServices(filtered);
-  //   }
-  // }, [selectedSkill, services]);
-
   useEffect(() => {
-    if (selectedSkill === '') {
-      setFilteredServices(services.filter(service =>
-        service.title.rendered.toLowerCase().includes(searchQuery.toLowerCase())
-      ));
-    } else {
-      const filtered = services.filter((service) => {
+    const startIndex = (currentPage - 1) * servicesPerPage;
+    const endIndex = startIndex + servicesPerPage;
+    setServices(filteredServices.slice(startIndex, endIndex));
+  }, [currentPage, filteredServices]);
+
+  const applyFilters = () => {
+    let filtered = filteredServices;
+
+    if (selectedSkill !== '') {
+      filtered = filtered.filter((service) => {
         if (Array.isArray(service.skill)) {
           return service.skill.includes(parseInt(selectedSkill));
         }
         return false;
-      }).filter(service =>
+      });
+    }
+
+    if (searchQuery.trim() !== '') {
+      filtered = filtered.filter((service) =>
         service.title.rendered.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredServices(filtered);
     }
-  }, [selectedSkill, services, searchQuery]);
-  
-  const handleSkillChange = e => {
+
+    setServices(filtered.slice(0, servicesPerPage));
+  };
+
+  const handleSkillChange = (e) => {
     setSelectedSkill(e.target.value);
+    applyFilters();
   };
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
+    applyFilters();
   };
 
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(totalServices / servicesPerPage);
+
+  const renderPagination = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button key={i} onClick={() => handlePagination(i)}>
+          {i}
+        </button>
+      );
+    }
+    return pages;
+  };
 
   if (isLoading || !globalsData) {
     return (
@@ -120,32 +136,36 @@ const ServicesPage = () => {
     <div className="services">
       <div className="container">
         <div className="services__content">
-          <h1>{pageData.acf.page_title}</h1>
-          <p dangerouslySetInnerHTML={{ __html: pageData.acf.page_sub_text }}></p>
+          <h1>{pageData?.acf.page_title}</h1>
+          <p dangerouslySetInnerHTML={{ __html: pageData?.acf.page_sub_text }}></p>
 
           <div className="services__form">
             <form>
-            <select onChange={handleSkillChange} value={selectedSkill}>
-            <option value="">Select a Skill</option>
-            {skillTerms &&
-              skillTerms.map(term => (
-                <option key={term.id} value={term.id}>
-                  {term.name}
-                </option>
-              ))}
-          </select>
-          <input
-            type="search"
-            placeholder="Search by title"
-            value={searchQuery}
-            onChange={handleInputChange}
-          />
+              <select onChange={handleSkillChange} value={selectedSkill}>
+                <option value="">Select a Skill</option>
+                {skillTerms &&
+                  skillTerms.map((term) => (
+                    <option key={term.id} value={term.id}>
+                      {term.name}
+                    </option>
+                  ))}
+              </select>
+              <input
+                type="search"
+                placeholder="Search by title"
+                value={searchQuery}
+                onChange={handleInputChange}
+              />
             </form>
           </div>
           <div className="services__grid">
-            {filteredServices.map((service) => (
+            {services.map((service) => (
               <ServiceCard service={service} key={service.id} />
             ))}
+          </div>
+
+          <div className="pagination">
+            {renderPagination()}
           </div>
         </div>
       </div>

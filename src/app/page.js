@@ -80,7 +80,7 @@ const Homepage = () => {
 
       <section className="homepage__parallax" style={bannerImageURL ? { backgroundImage: `url(${bannerImageURL})` } : null}>
         <div className="homepage__parallax__overlay"></div>
-        <div classNme="container">
+        <div className="container">
           <div className="homepage__parallax__content">
           <div className="homepage__parallax__text" dangerouslySetInnerHTML={{ __html: pageData.acf.parallax_text }}></div>
           </div>

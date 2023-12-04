@@ -77,7 +77,7 @@ const ServicesPage = () => {
 
   const applyFilters = () => {
     let filtered = filteredServices;
-
+  
     if (selectedSkill !== '') {
       filtered = filtered.filter((service) => {
         if (Array.isArray(service.skill)) {
@@ -86,15 +86,21 @@ const ServicesPage = () => {
         return false;
       });
     }
-
+  
     if (searchQuery.trim() !== '') {
       filtered = filtered.filter((service) =>
         service.title.rendered.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
+  
+    setTotalServices(filtered.length); // Update totalServices with filtered length
     setServices(filtered.slice(0, servicesPerPage));
   };
+  
+  useEffect(() => {
+    setTotalServices(filteredServices.length);
+  }, [filteredServices]);
+  
 
   const handleSkillChange = (e) => {
     setSelectedSkill(e.target.value);

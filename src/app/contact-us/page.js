@@ -14,6 +14,7 @@ const Contact = () => {
       yourName: "",
       yourEmail: "",
       yourMessage: "",
+      yourFiles: null, 
     });
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -26,6 +27,10 @@ const Contact = () => {
         Object.keys(formData).forEach((key) => {
           form.append(key, formData[key]);
         });
+
+        if (formData.yourFiles) {
+          form.append('yourFiles', formData.yourFiles);
+        }
   
         // Make a POST request using Axios
         const response = await axios.post(
@@ -45,31 +50,18 @@ const Contact = () => {
         // Handle error, display an error message to the user, etc.
       }
     };
-    // const handleSubmit = async (e) => {
-    //   e.preventDefault();
-    //   const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-  
-    //   console.log(formData);
 
-    //   try {
-    //     const response = await axios.post(
-    //       `${apiBaseUrl}wp-json/contact-form-7/v1/contact-forms/56/feedback`,
-    //       formData
-    //     );
-    
-  
-    //     console.log("Form submitted successfully!", response.data);
-    //     // Handle success or navigate to a success page
-    //   } catch (error) {
-    //     console.error("Error submitting form:", error);
-    //     // Handle error or show error message
-    //   }
-    // };
   
     const handleChange = (e) => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
     };
+
+    const handleFileChange = (event) => {
+      const selectedFile = event.target.files[0];
+      setFormData({ ...formData, yourFiles: selectedFile });
+    };
+  
 
     useEffect(() => {
         const slug = 'contact-us';
@@ -125,6 +117,13 @@ const Contact = () => {
                           value={formData.yourMessage}
                           onChange={handleChange}
                         ></textarea>
+
+<input
+              type="file"
+              name="yourFiles"
+              accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+              onChange={handleFileChange}
+            />
                         <button type="submit">Submit</button>
                       </form>
                     </div>

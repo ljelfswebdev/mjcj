@@ -4,16 +4,12 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/pages/homepage.scss';
 import axios from 'axios';
-import { fetchImageURL } from '../utils/image';
-import { useGlobalsContext } from '../utils/fetchGlobals';
 import { fetchPageData } from '../utils/fetchPageData';
 import ServiceSwiper from '../components/service-swiper';
 import Faqs from '../components/faqs'
 
 const Homepage = () => {
-  const globalsData = useGlobalsContext();
   const [pageData, setPageData] = useState(null);
-  const [bannerImageURL, setBannerImageURL] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -22,45 +18,29 @@ const Homepage = () => {
       .then((data) => {
         setPageData(data);
         setIsLoading(false);
-
-        // Fetch the banner image URL
-        const bannerImageID = data.acf.banner_image;
-        if (bannerImageID) {
-          fetchImageURL(bannerImageID)
-            .then((url) => setBannerImageURL(url))
-            .catch((error) => {
-              setIsLoading(false);
-              console.log('Error fetching this image')
-            });
-        }
-
-        const parallaxImageID = data.acf.parallax_image;
-        if (parallaxImageID) {
-          fetchImageURL(parallaxImageID)
-            .then((url) => setBannerImageURL(url))
-            .catch((error) => {
-              console.log('Error fetching this image')
-            });
-        }
       })
       .catch((error) => {
         console.log('Error fetching page data');
       });
   }, []);
 
-  if (isLoading || !globalsData) {
+
+
+  if (isLoading) {
     return( 
     <div className="loading">
       <img src="/loading.gif"/>
     </div> );
   }
 
+  const { banner_image, parallax_image } = pageData.acf;
+
+
   return (
     <>
       <section className="homepage__banner">
-        {/* Use the fetched bannerImageURL */}
-        {bannerImageURL && (
-          <img src={bannerImageURL} alt="Hero Banner" className="homepage__banner-background"/>
+        {banner_image && (
+          <img src={banner_image} alt="Hero Banner" className="homepage__banner-background"/>
         )}
         <div className="homepage__banner-overlay"></div>
         <div className="container">
@@ -78,7 +58,7 @@ const Homepage = () => {
 
       <ServiceSwiper/>
 
-      <section className="homepage__parallax" style={bannerImageURL ? { backgroundImage: `url(${bannerImageURL})` } : null}>
+      <section className="homepage__parallax" style={parallax_image ? { backgroundImage: `url(${parallax_image})` } : null}>
         <div className="homepage__parallax__overlay"></div>
         <div className="container">
           <div className="homepage__parallax__content">

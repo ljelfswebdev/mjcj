@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useGlobalsContext } from '../utils/fetchGlobals';
+import { fetchGlobalsData } from '../utils/fetchGlobals';
 
 const Faqs = () => {
-  const globalsData = useGlobalsContext();
   const [faqs, setFaqs] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null); // Initialize as null to start with no active item.
+  const [globalsData, setGlobalsData] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchGlobalsData();
+        setGlobalsData(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchFaqs = async () => {
@@ -36,12 +49,14 @@ const Faqs = () => {
     }
   };
 
+  const faqsTitle = globalsData?.acf?.[0]?.faqs_title || '';
+
   return (
     <section className="faqs">
       <div className="container">
         <div className="faqs-content">
           <div className="faqs-content-title">
-            <span></span>{globalsData.acf.faqs_title}<span></span>
+            <span></span>{faqsTitle}<span></span>
           </div>
           <div className="faqs-content-accordion">
             {faqs.map((faq, index) => (

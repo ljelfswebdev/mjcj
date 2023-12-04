@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useGlobalsContext } from '../../utils/fetchGlobals';
 import { fetchPageData } from '../../utils/fetchPageData';
 import axios from "axios";
 
 const Contact = () => {
-    const globalsData = useGlobalsContext();
     const [pageData, setPageData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 

@@ -5,12 +5,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { fetchPageData } from '../../utils/fetchPageData';
 import { fetchServices } from '../../utils/fetchServices';
-import { useGlobalsContext } from '../../utils/fetchGlobals';
 import ServiceCard from '../../components/service-card';
 
 const ServicesPage = () => {
   const [pageData, setPageData] = useState(null);
-  const globalsData = useGlobalsContext();
   const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
   const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

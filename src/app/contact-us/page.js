@@ -16,22 +16,49 @@ const Contact = () => {
       yourMessage: "",
       yourFiles: null, 
     });
+  
+    const handleFileChange = (event) => {
+      const selectedFiles = event.target.files;
+      const newFiles = Array.from(selectedFiles); // Convert FileList to array
+    
+      // Append new files to the existing files array in state
+      setFormData((prevData) => ({
+        ...prevData,
+        yourFiles: prevData.yourFiles ? [...prevData.yourFiles, ...newFiles] : newFiles,
+      }));
+    };
+
+    const displayUploadedFiles = formData.yourFiles && formData.yourFiles.length > 0 && (
+      <div>
+        <h3>Uploaded Files:</h3>
+        <ul>
+          {formData.yourFiles.map((file, index) => (
+            <li key={index}>{file.name}</li>
+          ))}
+        </ul>
+      </div>
+    );
+    
+    
     const handleSubmit = async (e) => {
       e.preventDefault();
       const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-  
+    
       try {
         const form = new FormData();
-  
-        // Append each form field to the FormData object
-        Object.keys(formData).forEach((key) => {
-          form.append(key, formData[key]);
-        });
-
+    
+        // Append other form fields
+        form.append('yourName', formData.yourName);
+        form.append('yourEmail', formData.yourEmail);
+        form.append('yourMessage', formData.yourMessage);
+    
+        // Append multiple files
         if (formData.yourFiles) {
-          form.append('yourFiles', formData.yourFiles);
+          for (let i = 0; i < formData.yourFiles.length; i++) {
+            form.append(`yourFiles[${i}]`, formData.yourFiles[i]);
+          }
         }
-  
+    
         // Make a POST request using Axios
         const response = await axios.post(
           `${apiBaseUrl}wp-json/contact-form-7/v1/contact-forms/56/feedback`,
@@ -42,7 +69,7 @@ const Contact = () => {
             },
           }
         );
-  
+    
         console.log('Response:', response.data);
         // Handle success, you might want to redirect the user or show a success message
       } catch (error) {
@@ -50,16 +77,13 @@ const Contact = () => {
         // Handle error, display an error message to the user, etc.
       }
     };
+    
+    
 
   
     const handleChange = (e) => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
-    };
-
-    const handleFileChange = (event) => {
-      const selectedFile = event.target.files[0];
-      setFormData({ ...formData, yourFiles: selectedFile });
     };
   
 
@@ -118,14 +142,18 @@ const Contact = () => {
                           onChange={handleChange}
                         ></textarea>
 
-<input
-              type="file"
-              name="yourFiles"
-              accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-              onChange={handleFileChange}
-            />
+                        <input
+                          type="file"
+                          name="yourFiles"
+                          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                          onChange={handleFileChange}
+                          multiple // Allow multiple file selection
+                        />
+
                         <button type="submit">Submit</button>
                       </form>
+
+                      {displayUploadedFiles}
                     </div>
                 </div>
             </div>

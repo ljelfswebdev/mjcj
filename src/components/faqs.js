@@ -49,7 +49,7 @@ const Faqs = () => {
     }
   };
 
-  const faqsTitle = globalsData?.acf?.[0]?.faqs_title || '';
+  const faqsTitle = globalsData?.acf?.faqs_title || '';
 
   return (
     <section className="faqs">

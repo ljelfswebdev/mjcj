@@ -6,7 +6,7 @@ const apiBaseUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
 
 export const fetchGlobalsData = async () => {
   try {
-    const response = await axios.get(`${apiBaseUrl}/wp-json/acf/v3/options/globals`);
+    const response = await axios.get(`${apiBaseUrl}/wp-json/acf/v3/options/options`);
     if (response.status !== 200) {
       throw new Error('Failed to fetch data');
     }

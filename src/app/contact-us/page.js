@@ -56,6 +56,7 @@ const Contact = () => {
             form.append(`yourFiles[${i}]`, formData.yourFiles[i]);
           }
         }
+        
     
         // Make a POST request using Axios
         const response = await axios.post(
@@ -98,7 +99,7 @@ const Contact = () => {
           });
       }, []);
 
-    if (isLoading || !globalsData) {
+    if (isLoading) {
         return (
           <div className="loading">
             <img src="/loading.gif" alt="Loading..." />

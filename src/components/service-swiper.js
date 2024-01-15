@@ -32,7 +32,8 @@ const ServiceSwiper = () => {
       });
   }, []);
 
-  const serviceSwiperTitle = globalsData?.acf?.[0]?.service_swiper_title || '';
+  const serviceSwiperTitle = globalsData?.acf?.service_swiper_title || '';
+
 
 
   return (
